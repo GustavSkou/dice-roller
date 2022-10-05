@@ -18,4 +18,3 @@ class DiceThrow:
             ran_side = random.uniform(1, self.sides+1)
             int_ran_side = int(ran_side)
             DiceThrow.lis_throws.append(int_ran_side)
-
