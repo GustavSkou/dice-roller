@@ -2,23 +2,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from DiceRoller import DiceThrow
 
-def check_times_in_row(num):
-    in_row.append(num)
-    if len(in_row) < 2:
-        pass
-    else:
-        for item in in_row:
-            next_num = in_row.index(item) + 1
-            if next_num > len(in_row)-1:
-                break
-            if item == in_row[next_num]:
-                times_in_row.append(1)
-                in_row.pop(in_row.index(item))
-            else:
-                in_row.pop(in_row.index(item))
-
-
-
 ones = []
 twos = []
 trees = []
@@ -35,24 +18,16 @@ times_thrown = int(thro)
 
 
 D = DiceThrow(rolls=times_thrown, sides=dice_sides)
-D.dice(
-    dice_sides=dice_sides
-)
-D.roll(
-    times_rolled=times_thrown
-)
+D.dice(dice_sides=dice_sides)
+D.roll(times_rolled=times_thrown)
 D.throw_dices()
-
+D.in_row()
 print(DiceThrow.lis_throws)
-#DiceThrow.lis_throws.sort()
-# print(lis_throws_sorted)
-
-in_row = []
-times_in_row = []
+print(D.twos_in_row)
+print(D.trees_in_row)
+print(D.fours_in_row)
 
 for x in DiceThrow.lis_throws:
-    check_times_in_row(x)
-
     if x == 1:
         ones.append(x)
     elif x == 2:
@@ -86,7 +61,6 @@ for n in range(6):     # [list][item]
 
 df = pd.DataFrame(data, columns=['side', 'count', 'pro'])
 print(df)
-print(len(times_in_row))
 fig1, ax1 = plt.subplots()
 ax1.pie(data_count, labels=data_labels, autopct='%1.1f%%', shadow=True, startangle=90)
 ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
