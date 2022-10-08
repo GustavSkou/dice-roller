@@ -1,12 +1,15 @@
 import random
+from itertools import groupby
 
 class DiceThrow:
     lis_throws = []
-    times_in_row = []
-    ones_in_row = []
-    twos_in_row = []
-    trees_in_row = []
-    fours_in_row = []
+    times_in_row = 0
+    ones_times_in_row = 0
+    twos_times_in_row = 0
+    trees_times_in_row = 0
+    fours_times_in_row = 0
+    fives_times_in_row = 0
+    skip = 0
     def __init__(self, sides, rolls):
         self.sides = sides
         self.rolls = rolls
@@ -18,25 +21,34 @@ class DiceThrow:
         self.sides = dice_sides
 
     def throw_dices(self):
+        print("throw_dices")
         for x in range(self.rolls):
             ran_side = random.uniform(1, self.sides+1)
             int_ran_side = int(ran_side)
             DiceThrow.lis_throws.append(int_ran_side)
+        print(DiceThrow.lis_throws)
 
     @staticmethod
     def in_row():
-        for item in DiceThrow.lis_throws:
-            next = DiceThrow.lis_throws[DiceThrow.lis_throws.index(item)+1]
-            next_over = DiceThrow.lis_throws[DiceThrow.lis_throws.index(item)+2]
-            next_two_over = DiceThrow.lis_throws[DiceThrow.lis_throws.index(item) + 3]
-            if item == DiceThrow.lis_throws[next] and DiceThrow.lis_throws[next] == DiceThrow.lis_throws[next_over] and DiceThrow.lis_throws[next_over] == DiceThrow.lis_throws[next_two_over]:
-                DiceThrow.fours_in_row.append(4)
-            elif item == DiceThrow.lis_throws[next] and DiceThrow.lis_throws[next] == DiceThrow.lis_throws[next_over]:
-                DiceThrow.trees_in_row.append(3)
-            elif item == DiceThrow.lis_throws[next]:
-                DiceThrow.twos_in_row.append(2)
-            else:
-                pass
-        DiceThrow.times_in_row.append(DiceThrow.twos_in_row)
-        DiceThrow.times_in_row.append(DiceThrow.trees_in_row)
-        DiceThrow.times_in_row.append(DiceThrow.fours_in_row)
+        lis = DiceThrow.lis_throws
+        grouped_lis = [[k, sum(1 for i in g)] for k, g in groupby(lis)]
+        print(grouped_lis)
+        for x in range(len(grouped_lis)):
+            DiceThrow.times_in_row = grouped_lis[x][1]
+
+            if DiceThrow.times_in_row == 1:
+                DiceThrow.ones_times_in_row = DiceThrow.ones_times_in_row + 1
+            elif DiceThrow.times_in_row == 2:
+                DiceThrow.twos_times_in_row = DiceThrow.twos_times_in_row + 1
+            elif DiceThrow.times_in_row == 3:
+                DiceThrow.trees_times_in_row = DiceThrow.trees_times_in_row + 1
+            elif DiceThrow.times_in_row == 4:
+                DiceThrow.fours_times_in_row = DiceThrow.fours_times_in_row + 1
+            elif DiceThrow.times_in_row == 5:
+                DiceThrow.fives_times_in_row = DiceThrow.fives_times_in_row + 1
+
+        print("total ", end="")
+        print(DiceThrow.twos_times_in_row, end=" ")
+        print(DiceThrow.trees_times_in_row, end=" ")
+        print(DiceThrow.fours_times_in_row, end=" ")
+        print(DiceThrow.fives_times_in_row)
